@@ -1,0 +1,32 @@
+flowchart TD
+    subgraph DataPrep["Data Preparation"]
+        FS["Feature Store"] --> Split["Time-based Split"]
+        Split --> |Training| Train["Training Set"]
+        Split --> |Validation| Val["Validation Set"]
+        Split --> |Test| Test["Test Set"]
+    end
+
+    subgraph Training["Model Training"]
+        Train --> |Config| HP["Hyperparameters"]
+        HP --> |ARIMA| ARIMA["ARIMA Training"]
+        HP --> |Prophet| Prophet["Prophet Training"]
+        HP --> |LSTM| LSTM["LSTM Training"]
+    end
+
+    subgraph Evaluation["Model Evaluation"]
+        ARIMA --> |Predict| Metrics["Metrics Calculation"]
+        Prophet --> |Predict| Metrics
+        LSTM --> |Predict| Metrics
+        Val --> Metrics
+        
+        Metrics --> |RMSE| Scores["Score Board"]
+        Metrics --> |MAE| Scores
+        Metrics --> |MAPE| Scores
+    end
+
+    subgraph Selection["Model Selection"]
+        Scores --> Rank["Model Ranking"]
+        Rank --> Best["Best Model Selection"]
+        Best --> Final["Final Evaluation"]
+        Test --> Final
+    end 

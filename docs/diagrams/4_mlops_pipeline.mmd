@@ -1,0 +1,29 @@
+flowchart TD
+    subgraph Schedule["Scheduling"]
+        Cron["Cron Trigger"] --> Flow["Prefect Flow"]
+        Flow --> Check["Status Check"]
+    end
+
+    subgraph Training["Training Pipeline"]
+        Check --> |New Data| Prep["Data Preparation"]
+        Prep --> Train["Model Training"]
+        Train --> Eval["Model Evaluation"]
+    end
+
+    subgraph Registry["Model Registry"]
+        Eval --> |Metrics| Compare["Performance Compare"]
+        Compare --> |Better| Register["Register Model"]
+        Compare --> |Worse| Keep["Keep Current"]
+        
+        Register --> Version["Version Control"]
+        Version --> Deploy["Deployment"]
+    end
+
+    subgraph Monitor["Monitoring"]
+        Deploy --> Track["Performance Tracking"]
+        Track --> Drift["Drift Detection"]
+        Track --> Health["Health Checks"]
+        
+        Drift --> |Alert| Action["Action Required"]
+        Health --> |Alert| Action
+    end 

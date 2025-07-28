@@ -1,0 +1,27 @@
+flowchart TD
+    subgraph Triggers["Retraining Triggers"]
+        Time["Time-based"] --> Check["Check Conditions"]
+        Perf["Performance Drop"] --> Check
+        Drift["Data Drift"] --> Check
+    end
+
+    subgraph Decision["Decision Making"]
+        Check --> Analyze["Analysis"]
+        Analyze --> |Threshold Met| Yes["Initiate Retraining"]
+        Analyze --> |Threshold Not Met| No["Skip Retraining"]
+    end
+
+    subgraph Action["Actions"]
+        Yes --> Notify["Notify Stakeholders"]
+        Yes --> Log["Log Decision"]
+        Yes --> Train["Start Training"]
+        
+        No --> Monitor["Continue Monitoring"]
+        No --> Log
+    end
+
+    subgraph Validation["Post-Retraining"]
+        Train --> Eval["Evaluate New Model"]
+        Eval --> |Better| Deploy["Deploy Model"]
+        Eval --> |Worse| Rollback["Rollback"]
+    end 

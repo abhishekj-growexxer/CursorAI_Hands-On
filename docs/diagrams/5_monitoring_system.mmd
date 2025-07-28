@@ -1,0 +1,36 @@
+flowchart LR
+    subgraph DataMonitor["Data Monitoring"]
+        Input["Input Data"] --> Quality["Quality Metrics"]
+        Input --> Dist["Distribution Analysis"]
+        Input --> Missing["Missing Patterns"]
+    end
+
+    subgraph ModelMonitor["Model Monitoring"]
+        Pred["Predictions"] --> Acc["Accuracy Metrics"]
+        Pred --> Latency["Response Time"]
+        Pred --> Error["Error Patterns"]
+    end
+
+    subgraph SysMonitor["System Monitoring"]
+        Res["Resources"] --> CPU["CPU Usage"]
+        Res --> Mem["Memory Usage"]
+        Res --> Disk["Storage Usage"]
+    end
+
+    subgraph Alerts["Alert System"]
+        Quality --> Rules["Alert Rules"]
+        Acc --> Rules
+        CPU --> Rules
+        
+        Rules --> Notify["Notifications"]
+        Rules --> Action["Action Items"]
+    end
+
+    subgraph Dashboard["Monitoring Dashboard"]
+        Quality --> Viz["Visualizations"]
+        Acc --> Viz
+        CPU --> Viz
+        
+        Viz --> Report["Reports"]
+        Report --> Export["Exportable Formats"]
+    end 

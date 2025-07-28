@@ -1,0 +1,20 @@
+Tasks: Forecast daily product sales using time series models, with model selection, retraining, and fast inference.
+    - Load  retail sales data.
+    - Implement ARIMA, Prophet, and LSTM (PyTorch).
+    - Use MLflow for tracking.
+    - Build a scheduled retraining job via Prefect.
+
+
+Evaluation Criteria:-
+
+Code Quality: Modular, testable, production-grade
+ML Depth: Understanding of model internals, training, tuning
+Prompting Skill: Effective use of Cursor to generate, debug, and improve
+System Thinking: Architecture, API, monitoring, deployment
+Docs & Logging: Clear README, usage logs, observability
+
+
+Interesting todo:
+    - Write cron-scheduled retraining DAG.
+    - Write scalable DataLoaders for LSTM input.
+    - Profile memory usage of model inference.

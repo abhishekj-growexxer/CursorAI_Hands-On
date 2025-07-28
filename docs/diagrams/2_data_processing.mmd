@@ -1,0 +1,32 @@
+flowchart LR
+    subgraph Input["Input Processing"]
+        CSV["CSV Source"] --> Parser["CSV Parser"]
+        Parser --> Validator["Data Validator"]
+        Validator --> Clean["Data Cleaning"]
+    end
+
+    subgraph Features["Feature Engineering"]
+        Clean --> Time["Time Features"]
+        Clean --> Lag["Lag Features"]
+        Clean --> Stats["Statistical Features"]
+        
+        Time --> Norm["Feature Normalization"]
+        Lag --> Norm
+        Stats --> Norm
+    end
+
+    subgraph Quality["Quality Checks"]
+        Norm --> Missing["Missing Values"]
+        Norm --> Outliers["Outlier Detection"]
+        Norm --> Drift["Drift Detection"]
+        
+        Missing --> QReport["Quality Report"]
+        Outliers --> QReport
+        Drift --> QReport
+    end
+
+    subgraph Storage["Data Storage"]
+        QReport --> |Valid| Store["Feature Store"]
+        QReport --> |Invalid| Error["Error Handler"]
+        Store --> Cache["Cache Layer"]
+    end 

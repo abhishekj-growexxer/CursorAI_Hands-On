@@ -1,0 +1,41 @@
+flowchart TD
+    subgraph DataIngestion["Data Ingestion Layer"]
+        CSV["CSV Files"] --> DL["Data Loader"]
+        DL --> DV["Data Validation"]
+        DV --> FE["Feature Engineering"]
+        FE --> Cache["Feature Store Cache"]
+    end
+
+    subgraph ModelLayer["Model Layer"]
+        Cache --> Split["Train-Test Split"]
+        Split --> |Training| Train["Training Pipeline"]
+        Split --> |Testing| Eval["Evaluation Pipeline"]
+        
+        subgraph Models["Model Zoo"]
+            direction LR
+            ARIMA["ARIMA Model"]
+            Prophet["Prophet Model"]
+            LSTM["LSTM Model"]
+        end
+        
+        Train --> Models
+        Models --> Eval
+    end
+
+    subgraph MLOps["MLOps Layer"]
+        Eval --> |Metrics| MLflow["MLflow Tracking"]
+        MLflow --> |"Best Model"| Registry["Model Registry"]
+        Registry --> Serving["Model Serving"]
+    end
+
+    subgraph Orchestration["Orchestration Layer"]
+        Prefect["Prefect Scheduler"] --> |Trigger| DataIngestion
+        Prefect --> |Monitor| MLOps
+        Prefect --> |Schedule| Retrain["Retraining Pipeline"]
+    end
+
+    subgraph Monitoring["Monitoring Layer"]
+        Serving --> Metrics["Performance Metrics"]
+        Metrics --> Dashboard["Monitoring Dashboard"]
+        Metrics --> Alerts["Alert System"]
+    end 
