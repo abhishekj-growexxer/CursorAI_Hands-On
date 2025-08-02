@@ -2,6 +2,41 @@
 
 A production-ready time series forecasting system for daily product sales using multiple models (ARIMA, Prophet, and LSTM) with automated retraining capabilities.
 
+## Project Documentation
+
+This project includes various documentation to help you understand the system, data pipeline, and model architecture. Below is a list of available documents:
+
+### System Overview & Architecture
+- [System Overview](docs/system_overview.md)
+- [System Design](docs/system_design.md)
+- [Model Architecture](docs/model_architecture.md)
+- [Project Flow](docs/project_flow.md)
+- [Architecture Diagrams](docs/architecture_diagrams.md)
+
+### Getting Started
+- [Getting Started](docs/getting_started.md)
+- [Quick Start](docs/quick_start.md)
+
+### Technical & Data Documentation
+- [Technical Documentation](docs/technical_documentation.md)
+- [Data Pipeline](docs/data_pipeline.md)
+- [Data Analysis Report](docs/data_analysis_report.md)
+
+### Miscellaneous
+- [Diagram Index](docs/diagram_index.md)
+
+
+---
+
+## Dataset Information: Store Sales - Time Series Forecasting
+
+This project utilizes the **Store Sales - Time Series Forecasting** dataset, which is available through a Kaggle competition.
+
+- **Competition Link**: [Store Sales - Time Series Forecasting](https://www.kaggle.com/competitions/store-sales-time-series-forecasting)
+- **Competition Status**: **Ongoing** (as of now, but check Kaggle for updates)
+- **Objective**: The goal is to forecast the sales for a store based on historical data and various features such as promotions, holiday seasons, and store details.
+  
+  
 ## Features
 
 - Multiple forecasting models:
@@ -149,4 +184,4 @@ A production-ready time series forecasting system for daily product sales using 
 
 ## License
 
-MIT
+[Add your license information here] 
