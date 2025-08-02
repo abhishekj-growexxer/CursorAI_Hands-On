@@ -1,0 +1,10 @@
+training:
+  batch_size: 32
+  epochs: 100
+  validation_split: 0.2
+  early_stopping_patience: 10
+  
+data:
+  sequence_length: 30
+  prediction_horizon: 7
+  test_size: 0.2

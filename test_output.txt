@@ -1,0 +1,172 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /home/growlt200/tasks/cursor_test_proj
+plugins: cov-6.2.1, anyio-4.9.0
+collected 11 items
+
+tests/test_arima_model.py ...F..F....                                    [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_preprocess_data _____________________________
+
+arima_model = <src.models.arima_model.ARIMAModel object at 0x71928ef03f70>
+sample_data =           date  store_nbr      sales  onpromotion
+0   2021-01-01          1  -0.993233            0
+1   2021-01-02    ...2021-03-30          2   3.725147            1
+179 2021-03-31          2   0.698560            0
+
+[180 rows x 4 columns]
+
+    def test_preprocess_data(arima_model, sample_data):
+        """Test data preprocessing."""
+        # Preprocess training data
+        X_train, y_train = arima_model.preprocess(sample_data, is_training=True)
+    
+        # Check output format
+        assert isinstance(X_train, pd.DataFrame)
+        assert y_train is None
+        assert set(X_train.columns) == {1, 2}  # Store numbers
+    
+        # Check if orders are found
+        assert hasattr(arima_model, 'store_orders')
+>       assert hasattr(arima_model, 'store_seasonal_orders')
+E       AssertionError: assert False
+E        +  where False = hasattr(<src.models.arima_model.ARIMAModel object at 0x71928ef03f70>, 'store_seasonal_orders')
+
+tests/test_arima_model.py:97: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+13:14:21 | src.models.arima_model | INFO     | Initializing ARIMAModel with config: configs/model_configs/default.yaml
+13:14:21 | src.models.base_model | INFO     | Initializing arima model
+------------------------------ Captured log setup ------------------------------
+INFO     src.models.arima_model:arima_model.py:25 Initializing ARIMAModel with config: configs/model_configs/default.yaml
+INFO     src.models.base_model:base_model.py:21 Initializing arima model
+DEBUG    src.models.base_model:base_model.py:39 Loaded arima configuration from configs/model_configs/default.yaml
+DEBUG    src.models.base_model:base_model.py:24 Loaded configuration: {'max_p': 5, 'max_d': 2, 'max_q': 5, 'seasonal': True, 'seasonal_periods': 7, 'information_criterion': 'aic', 'stepwise': True, 'suppress_warnings': True, 'error_action': 'warn'}
+DEBUG    src.models.arima_model:arima_model.py:31 ARIMAModel initialized successfully
+----------------------------- Captured stderr call -----------------------------
+13:14:21 | src.models.arima_model | INFO     | Preprocessing data for ARIMA
+13:14:21 | src.models.arima_model | INFO     | Preprocessed data for 2 stores
+------------------------------ Captured log call -------------------------------
+INFO     src.models.arima_model:arima_model.py:86 Preprocessing data for ARIMA
+INFO     src.models.arima_model:arima_model.py:94 Preprocessed data for 2 stores
+____________________________ test_model_evaluation _____________________________
+
+arima_model = <src.models.arima_model.ARIMAModel object at 0x71928eebffa0>
+sample_data =           date  store_nbr      sales  onpromotion
+0   2021-01-01          1  -0.264097            1
+1   2021-01-02    ...2021-03-30          2   3.959213            1
+179 2021-03-31          2  -0.976558            0
+
+[180 rows x 4 columns]
+
+    def test_model_evaluation(arima_model, sample_data):
+        """Test model evaluation."""
+        # Split data
+        train_data = sample_data[sample_data['date'] < '2021-03-15']
+        test_data = sample_data[sample_data['date'] >= '2021-03-15']
+    
+        # Train model
+        arima_model.train(train_data)
+    
+        # Evaluate model
+>       metrics = arima_model.evaluate(test_data)
+
+tests/test_arima_model.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <src.models.arima_model.ARIMAModel object at 0x71928eebffa0>
+test_data =           date  store_nbr      sales  onpromotion
+73  2021-03-15          1  13.999491            1
+74  2021-03-16    ...412337            0
+178 2021-03-30          2   3.959213            1
+179 2021-03-31          2  -0.976558            0
+metrics = ['mse', 'mae', 'mape']
+
+    def evaluate(
+        self,
+        test_data: pd.DataFrame,
+        metrics: List[str] = ['mse', 'mae', 'mape']
+    ) -> Dict[str, float]:
+        """
+        Evaluate model performance.
+    
+        Args:
+            test_data: Test data
+            metrics: Metrics to calculate
+    
+        Returns:
+            Evaluation metrics
+        """
+        logger.info(f"Evaluating {self.name} model")
+        try:
+            # Get predictions
+            logger.debug("Generating predictions for evaluation")
+            predictions = self.predict(test_data, 1)
+    
+            # Calculate metrics
+            logger.debug(f"Calculating metrics: {metrics}")
+            results = {}
+    
+            if 'mse' in metrics:
+>               mse = np.mean((test_data['sales'].values - predictions) ** 2)
+E               ValueError: operands could not be broadcast together with shapes (34,) (2,)
+
+src/models/base_model.py:126: ValueError
+---------------------------- Captured stderr setup -----------------------------
+13:14:42 | src.models.arima_model | INFO     | Initializing ARIMAModel with config: configs/model_configs/default.yaml
+13:14:42 | src.models.base_model | INFO     | Initializing arima model
+------------------------------ Captured log setup ------------------------------
+INFO     src.models.arima_model:arima_model.py:25 Initializing ARIMAModel with config: configs/model_configs/default.yaml
+INFO     src.models.base_model:base_model.py:21 Initializing arima model
+DEBUG    src.models.base_model:base_model.py:39 Loaded arima configuration from configs/model_configs/default.yaml
+DEBUG    src.models.base_model:base_model.py:24 Loaded configuration: {'max_p': 5, 'max_d': 2, 'max_q': 5, 'seasonal': True, 'seasonal_periods': 7, 'information_criterion': 'aic', 'stepwise': True, 'suppress_warnings': True, 'error_action': 'warn'}
+DEBUG    src.models.arima_model:arima_model.py:31 ARIMAModel initialized successfully
+----------------------------- Captured stderr call -----------------------------
+13:14:42 | src.models.arima_model | INFO     | Starting ARIMA model training
+13:14:42 | src.models.arima_model | INFO     | Preprocessing data for ARIMA
+13:14:42 | src.models.arima_model | INFO     | Preprocessed data for 2 stores
+13:14:42 | src.models.arima_model | INFO     | Training model for store 1
+13:14:47 | src.models.arima_model | INFO     | Training model for store 2
+13:14:51 | src.models.arima_model | INFO     | ARIMA training completed successfully
+13:14:51 | src.models.base_model | INFO     | Evaluating arima model
+13:14:51 | src.models.arima_model | INFO     | Generating predictions for 1 steps
+13:14:51 | src.models.arima_model | INFO     | Preprocessing data for ARIMA
+13:14:51 | src.models.arima_model | INFO     | Preprocessed data for 2 stores
+13:14:51 | src.models.base_model | ERROR    | Error during evaluation: operands could not be broadcast together with shapes (34,) (2,) 
+------------------------------ Captured log call -------------------------------
+INFO     src.models.arima_model:arima_model.py:105 Starting ARIMA model training
+INFO     src.models.arima_model:arima_model.py:86 Preprocessing data for ARIMA
+INFO     src.models.arima_model:arima_model.py:94 Preprocessed data for 2 stores
+INFO     src.models.arima_model:arima_model.py:112 Training model for store 1
+DEBUG    src.models.arima_model:arima_model.py:43 Checking stationarity for series of length 73
+DEBUG    src.models.arima_model:arima_model.py:48 Stationarity test results - p-value: 0.9587442148246151, is_stationary: False
+DEBUG    src.models.arima_model:arima_model.py:114 Store 1 stationarity - p_value: 0.9587442148246151
+DEBUG    src.models.arima_model:arima_model.py:55 Finding optimal ARIMA order
+DEBUG    src.models.arima_model:arima_model.py:79 Optimal order: (0, 0, 0), seasonal_order: (2, 1, 0, 7)
+DEBUG    src.models.arima_model:arima_model.py:139 Store 1 metrics: MSE=6.0670, RMSE=2.4631, MAE=1.4705, MAPE=64.0355%, AIC=219.08212513282072, BIC=227.84074410092643
+INFO     src.models.arima_model:arima_model.py:112 Training model for store 2
+DEBUG    src.models.arima_model:arima_model.py:43 Checking stationarity for series of length 73
+DEBUG    src.models.arima_model:arima_model.py:48 Stationarity test results - p-value: 0.9603223767501979, is_stationary: False
+DEBUG    src.models.arima_model:arima_model.py:114 Store 2 stationarity - p_value: 0.9603223767501979
+DEBUG    src.models.arima_model:arima_model.py:55 Finding optimal ARIMA order
+DEBUG    src.models.arima_model:arima_model.py:79 Optimal order: (0, 0, 1), seasonal_order: (0, 1, 1, 7)
+DEBUG    src.models.arima_model:arima_model.py:139 Store 2 metrics: MSE=5.8856, RMSE=2.4260, MAE=1.3481, MAPE=180.8238%, AIC=195.3468946717191, BIC=204.1055136398248
+INFO     src.models.arima_model:arima_model.py:144 ARIMA training completed successfully
+INFO     src.models.base_model:base_model.py:115 Evaluating arima model
+DEBUG    src.models.base_model:base_model.py:118 Generating predictions for evaluation
+INFO     src.models.arima_model:arima_model.py:151 Generating predictions for 1 steps
+INFO     src.models.arima_model:arima_model.py:86 Preprocessing data for ARIMA
+INFO     src.models.arima_model:arima_model.py:94 Preprocessed data for 2 stores
+DEBUG    src.models.arima_model:arima_model.py:179 Generated predictions with shape: (2,)
+DEBUG    src.models.base_model:base_model.py:122 Calculating metrics: ['mse', 'mae', 'mape']
+ERROR    src.models.base_model:base_model.py:145 Error during evaluation: operands could not be broadcast together with shapes (34,) (2,)
+=============================== warnings summary ===============================
+tests/test_arima_model.py: 305 warnings
+  /home/growlt200/tasks/cursor_test_proj/venv/lib/python3.10/site-packages/sklearn/utils/deprecation.py:132: FutureWarning: 'force_all_finite' was renamed to 'ensure_all_finite' in 1.6 and will be removed in 1.8.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_arima_model.py::test_preprocess_data - AssertionError: asse...
+FAILED tests/test_arima_model.py::test_model_evaluation - ValueError: operand...
+================== 2 failed, 9 passed, 305 warnings in 49.67s ==================

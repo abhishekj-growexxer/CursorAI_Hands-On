@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.stats.diagnostic import acf
+from statsmodels.tsa.stattools import acf
 from sklearn.preprocessing import StandardScaler
 import plotly.express as px
 import plotly.graph_objects as go

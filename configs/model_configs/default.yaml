@@ -1,0 +1,29 @@
+arima:
+  max_p: 5
+  max_d: 2
+  max_q: 5
+  seasonal: true
+  seasonal_periods: 7
+  information_criterion: 'aic'
+  stepwise: true
+  suppress_warnings: true
+  error_action: 'warn'
+
+lstm:
+  sequence_length: 30
+  hidden_size: 64
+  num_layers: 2
+  dropout: 0.2
+  learning_rate: 0.001
+  batch_size: 32
+  num_epochs: 100
+
+prophet:
+  seasonality_mode: 'multiplicative'
+  yearly_seasonality: 'auto'
+  weekly_seasonality: 'auto'
+  daily_seasonality: false
+  changepoint_prior_scale: 0.05
+  seasonality_prior_scale: 10.0
+  holidays_prior_scale: 10.0
+  changepoint_range: 0.8
