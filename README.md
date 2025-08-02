@@ -149,4 +149,4 @@ A production-ready time series forecasting system for daily product sales using 
 
 ## License
 
-[Add your license information here] 
+MIT
