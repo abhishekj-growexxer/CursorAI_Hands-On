@@ -84,28 +84,64 @@ This project utilizes the **Store Sales - Time Series Forecasting** dataset, whi
 ## Project Structure
 
 ```
-├── configs/            # Configuration files
-│   ├── model_configs/  # Model-specific parameters
-│   └── training_configs/ # Training parameters
-├── data/              
-│   ├── raw/           # Original data
-│   └── processed/     # Cleaned data
-├── logs/              # Application logs
-│   ├── training/      # Training logs
-│   ├── api/           # API logs
-│   └── monitoring/    # Monitoring logs
-├── models/            # Saved models
-│   ├── arima/         # ARIMA models
-│   ├── prophet/       # Prophet models
-│   └── lstm/          # LSTM models
-├── notebooks/         # Jupyter notebooks
-├── src/
-│   ├── data/         # Data processing
-│   ├── models/       # Model implementations
-│   ├── training/     # Training pipelines
-│   ├── monitoring/   # Monitoring tools
-│   └── utils/        # Helper functions
-└── tests/            # Unit tests
+├── configs
+│ ├── model_configs
+│ └── training_configs
+├── data
+│ ├── processed
+│ └── raw
+├── dataset
+│ ├── dataset_info.txt
+│ └── store-sales-time-series-forecasting
+├── docs
+│ ├── architecture_diagrams.md
+│ ├── data_analysis_report.md
+│ ├── data_pipeline.md
+│ ├── getting_started.md
+│ ├── model_architecture.md
+│ ├── project_flow.md
+│ ├── quick_start.md
+│ ├── system_design.md
+│ ├── system_overview.md
+│ └── technical_documentation.md
+├── generate_diagrams.sh
+├── logs
+│ ├── api
+│ ├── data
+│ ├── models
+│ ├── monitoring
+│ └── training
+├── mlruns
+│ └── models
+├── models
+│ ├── arima
+│ ├── lstm
+│ └── prophet
+├── notebooks
+│ └── 01_data_exploration.ipynb
+├── README.md
+├── requirements.txt
+├── run_dashboard.sh
+├── setup.sh
+├── src
+│ ├── analysis
+│ ├── dashboard
+│ ├── data
+│ ├── models
+│ ├── monitoring
+│ ├── training
+│ └── utils
+├── stop_services.sh
+└── tests
+├── test_arima_model.py
+├── test_data_processor.py
+├── test_feature_engineering.py
+├── test_lstm_model.py
+├── test_mlflow_tracking.py
+├── test_monitoring.py
+├── test_prefect_workflows.py
+├── test_prophet_model.py
+└── test_training_pipeline.py
 ```
 
 ## Configuration
